@@ -1,0 +1,16 @@
+name: "bats-core"
+description: "Install and run bats-core"
+inputs:
+  args:
+    description: "args for bats-core"
+    required: true
+    default: "."
+runs:
+  using: "composite"
+  steps:
+    - name: bats-core
+      run: |
+        git clone https://github.com/bats-core/bats-core.git $HOME/bats-core
+        sudo $HOME/bats-core/install.sh /usr/local
+        bats ${{ inputs.args }}
+      shell: bash
