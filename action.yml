@@ -5,6 +5,9 @@ inputs:
     description: "args for bats-core"
     required: true
     default: "."
+  directory:
+    description: "the working directory"
+    required: false
 runs:
   using: "composite"
   steps:
@@ -12,5 +15,10 @@ runs:
       run: |
         git clone https://github.com/bats-core/bats-core.git $HOME/bats-core
         sudo $HOME/bats-core/install.sh /usr/local
+
+        if [ -z ${${{ inputs.directory }}+x} ]; then
+          cd ${{ inputs.directory }}
+        fi
+        
         bats ${{ inputs.args }}
       shell: bash
