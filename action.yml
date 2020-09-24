@@ -1,6 +1,10 @@
 name: "bats-core"
 description: "Install and run bats-core"
 inputs:
+  version:
+    description: "The version (git tag) of bats-core (defaults to 'master')"
+    required: false
+    default: "master"
   args:
     description: "args for bats-core"
     required: false
@@ -12,8 +16,9 @@ runs:
   steps:
     - name: bats-core
       run: |
-        git clone https://github.com/bats-core/bats-core.git $HOME/bats-core
-        sudo $HOME/bats-core/install.sh /usr/local
+        git clone https://github.com/bats-core/bats-core.git $HOME/bats-core && cd $HOME/bats-core
+        git checkout ${{ inputs.version }}
+        sudo ./install.sh /usr/local
 
         if [ -n "${{ inputs.directory }}" ]; then
           cd ${{ inputs.directory }}
